@@ -1,0 +1,48 @@
+plugins {
+	id 'java'
+}
+
+group = 'co.laptev'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('lombokVersion', '1.18.16')
+	set('log4jVersion', '2.13.3')
+}
+
+dependencies {
+	implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+	implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:${log4jVersion}"
+	implementation 'com.amazonaws:aws-lambda-java-log4j2:1.2.0'
+	implementation('org.telegram:telegrambots:4.9.1') {
+		exclude group: 'org.glassfish.jersey.inject', module: 'jersey-hk2'
+		exclude group: 'org.glassfish.jersey.media', module: 'jersey-media-json-jackson'
+		exclude group: 'org.glassfish.jersey.containers', module: 'jersey-container-grizzly2-http'
+		exclude group: 'org.glassfish.jersey.core', module: 'jersey-server'
+		exclude group: 'org.json', module: 'json'
+		exclude group: 'commons-io', module: 'commons-io'
+		exclude group: 'com.google.code.findbugs', module: 'jsr305'
+		exclude group: 'org.checkerframework', module: 'checker-qual'
+		exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+		exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+		exclude group: 'com.google.guava', module: 'listenablefuture'
+	}
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+task buildZip(type: Zip) {
+	from compileJava
+	from processResources
+	into('lib') {
+		from configurations.runtimeClasspath
+	}
+}
+
+build.dependsOn buildZip
