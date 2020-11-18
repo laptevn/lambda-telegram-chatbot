@@ -1,0 +1,39 @@
+plugins {
+	id 'java'
+}
+
+group = 'co.laptev'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('lombokVersion', '1.18.16')
+	set('log4jVersion', '2.13.3')
+	set('jacksonVersion', '2.11.3')
+}
+
+dependencies {
+	implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+	implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:${log4jVersion}"
+	implementation 'com.amazonaws:aws-lambda-java-log4j2:1.2.0'
+	implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+	implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+	implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+task buildZip(type: Zip) {
+	from compileJava
+	from processResources
+	into('lib') {
+		from configurations.runtimeClasspath
+	}
+}
+
+build.dependsOn buildZip
