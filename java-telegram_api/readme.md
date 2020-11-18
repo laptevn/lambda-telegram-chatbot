@@ -1,2 +1,2 @@
 # Overview
-This is message handler used as AWS Lambda function to handle all Telegram incoming messages.
+Plain old Java handler of AWS Lambda, that uses native Telegram HTTP API.
