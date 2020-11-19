@@ -24,16 +24,16 @@ public class MessageHandler implements RequestHandler<UpdateEvent, Map<String, I
                 HttpClient.newHttpClient(), getEnvVariable("botToken"), new ObjectMapper());
     }
 
-     @Override
+    @Override
     public Map<String, Integer> handleRequest(UpdateEvent value, Context context) {
         logger.info(value.toString());
 
-         String message = String.format("Hey, you wrote: %s", value.getBody().getMessage().getText());
-         try {
-             telegramClient.send(new Message(value.getBody().getMessage().getFrom().getId(), message));
-         } catch (TelegramException e) {
-             logger.error("Cannot send a message", e);
-         }
+        String message = String.format("Hey, you wrote: %s", value.getBody().getMessage().getText());
+        try {
+            telegramClient.send(new Message(value.getBody().getMessage().getFrom().getId(), message));
+        } catch (TelegramException e) {
+            logger.error("Cannot send a message", e);
+        }
 
         return Collections.singletonMap("statusCode", 200);
     }
