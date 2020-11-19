@@ -19,16 +19,16 @@ public class MessageHandler implements RequestHandler<UpdateEvent, Map<String, I
         this.telegramClient = new TelegramClient(getEnvVariable("botToken"));
     }
 
-     @Override
+    @Override
     public Map<String, Integer> handleRequest(UpdateEvent value, Context context) {
         logger.info(value.toString());
 
-         String message = String.format("Hey, you wrote: %s", value.getBody().getMessage().getText());
-         try {
-             telegramClient.sendMessage(value.getBody().getMessage().getFrom().getId(), message);
-         } catch (TelegramApiException e) {
-             logger.error("Cannot send a message", e);
-         }
+        String message = String.format("Hey, you wrote: %s", value.getBody().getMessage().getText());
+        try {
+            telegramClient.sendMessage(value.getBody().getMessage().getFrom().getId(), message);
+        } catch (TelegramApiException e) {
+            logger.error("Cannot send a message", e);
+        }
 
         return Collections.singletonMap("statusCode", 200);
     }
