@@ -1,20 +1,20 @@
 buildscript {
-	ext {
-		shadowVersion = '4.0.3'
-	}
-	dependencies {
-		classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin")
-		classpath("org.springframework.boot:spring-boot-gradle-plugin")
-		classpath "com.github.jengelman.gradle.plugins:shadow:${shadowVersion}"
-	}
+    ext {
+        shadowVersion = '4.0.3'
+    }
+    dependencies {
+        classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin")
+        classpath "com.github.jengelman.gradle.plugins:shadow:${shadowVersion}"
+    }
 }
 
 plugins {
-	id 'org.springframework.boot' version '2.3.4.RELEASE'
-	id 'org.springframework.boot.experimental.thin-launcher' version '1.0.25.RELEASE'
-	id 'com.github.johnrengelman.shadow' version "${shadowVersion}"
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.springframework.boot.experimental.thin-launcher' version '1.0.25.RELEASE'
+    id 'com.github.johnrengelman.shadow' version "${shadowVersion}"
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
 }
 
 group = 'co.laptev'
@@ -22,75 +22,76 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudFunctionVersion', '3.0.10.RELEASE')
-	set('lombokVersion', '1.18.16')
+    set('springCloudFunctionVersion', '3.0.10.RELEASE')
+    set('lombokVersion', '1.18.16')
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.cloud:spring-cloud-function-context'
-	implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
-	compileOnly 'com.amazonaws:aws-lambda-java-events:3.4.0'
-	compileOnly 'com.amazonaws:aws-lambda-java-log4j2:1.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.cloud:spring-cloud-function-context'
+    implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
+    compileOnly 'com.amazonaws:aws-lambda-java-events:3.4.0'
+    compileOnly 'com.amazonaws:aws-lambda-java-log4j2:1.2.0'
     implementation('org.telegram:telegrambots:4.9.1') {
-		exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-		exclude group: 'com.fasterxml.jackson.jaxrs', module: 'jackson-jaxrs-json-provider'
-		exclude group: 'com.fasterxml.jackson.module', module: 'jackson-module-jaxb-annotations'
-		exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+        exclude group: 'com.fasterxml.jackson.jaxrs', module: 'jackson-jaxrs-json-provider'
+        exclude group: 'com.fasterxml.jackson.module', module: 'jackson-module-jaxb-annotations'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
         exclude group: 'org.glassfish.jersey.inject', module: 'jersey-hk2'
-		exclude group: 'org.glassfish.jersey.media', module: 'jersey-media-json-jackson'
-		exclude group: 'org.glassfish.jersey.containers', module: 'jersey-container-grizzly2-http'
-		exclude group: 'org.glassfish.jersey.core', module: 'jersey-server'
-		exclude group: 'org.json', module: 'json'
-		exclude group: 'commons-io', module: 'commons-io'
+        exclude group: 'org.glassfish.jersey.media', module: 'jersey-media-json-jackson'
+        exclude group: 'org.glassfish.jersey.containers', module: 'jersey-container-grizzly2-http'
+        exclude group: 'org.glassfish.jersey.core', module: 'jersey-server'
+        exclude group: 'org.json', module: 'json'
+        exclude group: 'commons-io', module: 'commons-io'
         exclude group: 'org.slf4j', module: 'slf4j-api'
-		exclude group: 'aopalliance', module: 'aopalliance'
-		exclude group: 'com.google.code.findbugs', module: 'jsr305'
-		exclude group: 'org.checkerframework', module: 'checker-qual'
-		exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
-		exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
-		exclude group: 'com.google.guava', module: 'listenablefuture'
-	}
-	compileOnly "org.projectlombok:lombok:${lombokVersion}"
-	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        exclude group: 'aopalliance', module: 'aopalliance'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+        exclude group: 'org.checkerframework', module: 'checker-qual'
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+        exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-function-dependencies:${springCloudFunctionVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-function-dependencies:${springCloudFunctionVersion}"
+    }
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 assemble.dependsOn = [shadowJar, thinJar]
 
 jar {
-	manifest {
-		attributes 'Main-Class': 'co.laptev.messagehandler.MessageHandlerApplication'
-	}
+    manifest {
+        attributes 'Main-Class': 'co.laptev.messagehandler.MessageHandlerApplication'
+    }
 }
 
-import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 
 shadowJar {
-	archiveClassifier = 'aws'
-	dependencies {
-		exclude(dependency("org.springframework.cloud:spring-cloud-function-web:${springCloudFunctionVersion}"))
-	}
-	// Required for Spring
-	mergeServiceFiles()
-	append 'META-INF/spring.handlers'
-	append 'META-INF/spring.schemas'
-	append 'META-INF/spring.tooling'
-	transform(PropertiesFileTransformer) {
-		paths = ['META-INF/spring.factories']
-		mergeStrategy = "append"
-	}
+    archiveClassifier = 'aws'
+    dependencies {
+        exclude(dependency("org.springframework.cloud:spring-cloud-function-web:${springCloudFunctionVersion}"))
+    }
+    // Required for Spring
+    mergeServiceFiles()
+    append 'META-INF/spring.handlers'
+    append 'META-INF/spring.schemas'
+    append 'META-INF/spring.tooling'
+    transform(PropertiesFileTransformer) {
+        paths = ['META-INF/spring.factories']
+        mergeStrategy = "append"
+    }
 }
